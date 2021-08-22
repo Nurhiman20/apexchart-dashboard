@@ -29,7 +29,7 @@
 					align: "center",
 				},
 				xaxis: {
-					categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998],
+					categories: null,
 					title: {
 						text: "Test X Axis",
 					},
@@ -42,10 +42,28 @@
 			},
 			series: [
 				{
-					name: "series-1",
-					data: [30, 40, 45, 50, 49, 60, 70, 91],
+					name: null,
+					data: null,
 				},
 			],
 		}),
+		methods: {
+			getDataLine() {
+				this.axios
+					.get("http://localhost:3000/data/line-chart")
+					.then((response) => {
+						this.options.xaxis.categories = response.data.x_axis.series;
+						this.series = [
+							{
+								name: response.data.y_axis.name,
+								data: response.data.y_axis.series,
+							},
+						];
+					});
+			},
+		},
+		created() {
+			this.getDataLine();
+		},
 	};
 </script>
